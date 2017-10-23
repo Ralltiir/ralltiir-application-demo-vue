@@ -1,9 +1,9 @@
 /*
  * Superframe
- * Version: ralltiir-2.8.0
+ * Version: ralltiir-2.8.1
  * Homepage: http://superframe.baidu.com
- * Build Date: 2017-10-23T22:12:33+0800
- * Last Commit: 4ac82e2 update docs
+ * Build Date: 2017-10-23T23:45:25+0800
+ * Last Commit: 062aba4 add src to npm
  */
 /**
  * @file main.js inline all modules

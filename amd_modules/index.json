@@ -1,26 +1,26 @@
 [
   {
     "name": "ralltiir",
-    "version": "2.8.0",
+    "version": "2.8.1",
     "filepath": "ralltiir/src/index.js",
-    "fullpath": "/Users/harttle/src/ralltiir-demo/amd_modules/ralltiir/src/index.js"
+    "fullpath": "/Users/harttle/src/ralltiir-application-demo/amd_modules/ralltiir/src/index.js"
   },
   {
     "name": "@searchfe/assert",
     "version": "1.0.0",
     "filepath": "@searchfe/assert/index.js",
-    "fullpath": "/Users/harttle/src/ralltiir-demo/amd_modules/@searchfe/assert/index.js"
+    "fullpath": "/Users/harttle/src/ralltiir-application-demo/amd_modules/@searchfe/assert/index.js"
   },
   {
     "name": "@searchfe/promise",
     "version": "1.0.3",
     "filepath": "@searchfe/promise/src/promise.js",
-    "fullpath": "/Users/harttle/src/ralltiir-demo/amd_modules/@searchfe/promise/src/promise.js"
+    "fullpath": "/Users/harttle/src/ralltiir-application-demo/amd_modules/@searchfe/promise/src/promise.js"
   },
   {
     "name": "ralltiir-application",
     "version": "4.0.9",
     "filepath": "ralltiir-application/service/commonService.js",
-    "fullpath": "/Users/harttle/src/ralltiir-demo/amd_modules/ralltiir-application/service/commonService.js"
+    "fullpath": "/Users/harttle/src/ralltiir-application-demo/amd_modules/ralltiir-application/service/commonService.js"
   }
 ]
