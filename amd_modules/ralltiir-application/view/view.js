@@ -99,7 +99,6 @@ define(function (require) {
             to.innerHTML = '';
             this.loading.show(to);
         }
-
         return View
         .createTemplateStream(url, {
             'x-rt-partial': 'true',
@@ -120,6 +119,11 @@ define(function (require) {
             location.href = url;
         });
     };
+
+    function getBackendUrl(url) {
+        var root = rt.action.config().root.replace(/\/+$/, '');
+        return root + url;
+    }
 
     function updateTitleBarElement(el, options) {
         if (_.has(options, 'html')) {
@@ -267,7 +271,7 @@ define(function (require) {
     };
 
     View.createTemplateStream = function (url, headers) {
-        return http.ajax(url, {
+        return http.ajax(getBackendUrl(url), {
             headers: _.assign(headers, {
                 'x-rt': 'true'
             }),

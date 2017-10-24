@@ -1,9 +1,9 @@
 /*
  * Superframe
- * Version: ralltiir-2.8.1
+ * Version: ralltiir-2.8.2
  * Homepage: http://superframe.baidu.com
- * Build Date: 2017-10-23T23:45:25+0800
- * Last Commit: 062aba4 add src to npm
+ * Build Date: 2017-10-24T15:12:17+0800
+ * Last Commit: d3fbe71 2.8.2
  */
 /**
  * @file main.js inline all modules
@@ -4390,9 +4390,8 @@ define('sfr/action', ['require', 'sfr/utils/cache', 'sfr/lang/promise', 'sfr/lan
         var backManually;
         var indexPageUrl;
         var isIndexPage;
-        var root;
         var pageId;
-        var visitedClassName;
+        var config = {};
 
         // The state data JUST for the next dispatch
         var stageData = {};
@@ -4414,8 +4413,10 @@ define('sfr/action', ['require', 'sfr/utils/cache', 'sfr/lang/promise', 'sfr/lan
                 limit: 32
             });
             backManually = false;
-            visitedClassName = 'visited';
-            root = '/';
+            config = {
+                root: '/',
+                visitedClassName: 'visited'
+            };
             indexPageUrl = '/';
             isIndexPage = true;
             pageId = 0;
@@ -4667,17 +4668,15 @@ define('sfr/action', ['require', 'sfr/utils/cache', 'sfr/lang/promise', 'sfr/lan
          *  config the action, called by action.start
          *
          *  @param {Object} options key/value pairs to config the action
+         *  @return {Object} result config object
          *  @static
          * */
         exports.config = function (options) {
-            options = options || {};
-            if (options.root) {
-                root = options.root;
+            if (arguments.length !== 0) {
+                _.assign(config, options);
+                router.config(config);
             }
-            if (options.visitedClassName) {
-                visitedClassName = options.visitedClassName;
-            }
-            router.config(options);
+            return config;
         };
 
         /**
@@ -4707,7 +4706,7 @@ define('sfr/action', ['require', 'sfr/utils/cache', 'sfr/lang/promise', 'sfr/lan
                 router.redirect(url, query, options);
             }
             catch (e) {
-                e.url = URL.resolve(root, url);
+                e.url = URL.resolve(config.root, url);
                 location.replace(e.url);
                 exports.emit('redirectFailed', e);
                 throw e;
@@ -4802,7 +4801,7 @@ define('sfr/action', ['require', 'sfr/utils/cache', 'sfr/lang/promise', 'sfr/lan
                     anchor: targetEl
                 };
                 exports.redirect(link, null, options, extra);
-                dom.addClass(targetEl, visitedClassName);
+                dom.addClass(targetEl, config.visitedClassName);
             }
         }
 
