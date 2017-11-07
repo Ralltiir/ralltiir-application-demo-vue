@@ -29,14 +29,8 @@ define(function (require) {
         var stageData = {};
         var dispatchQueue = mkDispatchQueue();
 
-        /**
-         * This is provided to reset closure variables which defines the inner state.
-         *
-         * @private
-         */
-        exports.init = function () {
-            services.init(this.dispatch);
-            exports.pages = pages = cache.create('pages', {
+        function createPages() {
+            var pages = cache.create('pages', {
                 onRemove: function (page, url, evicted) {
                     if (_.isFunction(page.onRemove)) {
                         page.onRemove(url, evicted);
@@ -44,6 +38,26 @@ define(function (require) {
                 },
                 limit: 32
             });
+            function normalizeKey(fn, thisArg) {
+                return function (url) {
+                    arguments[0] = (url || '').replace(/#.*$/, '');
+                    return fn.apply(thisArg, arguments);
+                };
+            }
+            pages.get = normalizeKey(pages.get, pages);
+            pages.set = normalizeKey(pages.set, pages);
+            pages.contains = normalizeKey(pages.contains, pages);
+            return pages;
+        }
+
+        /**
+         * This is provided to reset closure variables which defines the inner state.
+         *
+         * @private
+         */
+        exports.init = function () {
+            services.init(this.dispatch);
+            exports.pages = pages = createPages();
             backManually = false;
             config = {
                 root: '/',
@@ -198,6 +212,12 @@ define(function (require) {
                 if (currentService && currentService.abort) {
                     currentService.abort(current, prev, data);
                 }
+            }, function errorHandler(e) {
+                // eslint-disable-next-line
+                console.error(e);
+                if (_.get(current, 'options.src') !== 'sync') {
+                    location.replace(location.href);
+                }
             });
         };
 
@@ -251,9 +271,10 @@ define(function (require) {
              * and a promise for the results of the functions is returned.
              *
              * @param {Function} abortCallback The callback to be called when dispatch aborted
+             * @param {Function} errorHandler The callback to be called when error occurred
              * @return {Promise} The promise to be resolved when all tasks completed
              */
-            function exec(abortCallback) {
+            function exec(abortCallback, errorHandler) {
                 // Record the thread ID for current thread
                 // To ensure there's ONLY ONE thread running.
                 var thisThreadID = threadID;
@@ -271,13 +292,9 @@ define(function (require) {
                     }
                     logger.log('calling lifecycle', cb.name);
                     return cb();
-                }).catch(function (e) {
-                    // throw asyncly rather than console.error(e.stack)
-                    // to enable browser console's error tracing.
-                    setTimeout(function () {
-                        throw e;
-                    });
-                }).then(function () {
+                })
+                .catch(errorHandler)
+                .then(function () {
                     lastAbortCallback = null;
                 });
             }
@@ -407,15 +424,17 @@ define(function (require) {
          * */
         function onAnchorClick(event) {
             event = event || window.event;
-            var targetEl = closest(event.target || event.srcElement, 'A');
+            var anchor = closest(event.target || event.srcElement, function (el) {
+                return el.tagName === 'A';
+            });
 
-            if (!targetEl) {
+            if (!anchor) {
                 return;
             }
 
             // link href only support url like pathname,e.g:/sf?params=
-            var link = targetEl.getAttribute('data-sf-href');
-            var options = targetEl.getAttribute('data-sf-options');
+            var link = anchor.getAttribute('data-sf-href');
+            var options = anchor.getAttribute('data-sf-options');
 
             if (link) {
                 event.preventDefault();
@@ -430,11 +449,22 @@ define(function (require) {
                 options.src = 'hijack';
                 var extra = {
                     event: event,
-                    anchor: targetEl
+                    anchor: anchor
                 };
-                exports.redirect(link, null, options, extra);
-                dom.addClass(targetEl, config.visitedClassName);
+                var url = baseUrl(anchor) + link;
+                exports.redirect(url, null, options, extra);
+                dom.addClass(anchor, config.visitedClassName);
             }
+        }
+
+        function baseUrl(anchor) {
+            var rtView = closest(anchor, function (el) {
+                return /(^|\s)rt-view($|\s)/.test(el.className);
+            });
+            if (!rtView) {
+                return '';
+            }
+            return rtView.getAttribute('data-base') || '';
         }
 
         /**
@@ -442,12 +472,12 @@ define(function (require) {
          *
          * @private
          * @param {DOMElement} element The element from which to find
-         * @param {string} tagName The tagName to find
+         * @param {Function} predict The predict function, called with the element
          * @return {DOMElement} The closest ancester matching the tagName
          */
-        function closest(element, tagName) {
+        function closest(element, predict) {
             var parent = element;
-            while (parent !== null && parent.tagName !== tagName.toUpperCase()) {
+            while (parent !== null && !predict(parent)) {
                 parent = parent.parentNode;
             }
             return parent;
