@@ -1,1 +1,0 @@
-define(['./promise/src/promise'], function (mod) { return mod; })
