@@ -14,6 +14,8 @@ require(['ralltiir', 'ralltiir-application', 'ralltiir-application/view/view'], 
   View.backHTML = '<i class="fa fa-arrow-left"></i>'
   rt.services.register('/home', {title: 'Ralltiir Application'}, Service)
   rt.services.register('/scroll-restore', {title: 'Scroll Restore'}, Service)
+  rt.services.register('/partial-update', {title: 'Partial Update'}, Service)
+  rt.services.register('/partial-update-advanced', {title: 'Partial Update'}, Service)
 
   rt.action.start({
       root: '/ralltiir-application-demo'
