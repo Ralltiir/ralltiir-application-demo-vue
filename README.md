@@ -8,6 +8,8 @@ cd ralltiir-application-demo
 npm install && apmjs install
 ```
 
-## Preview
+## Run
 
-Open `http://localhost:8080/ralltiir-application-demo/home`
+* `npm start`
+* `http://localhost:8080/ralltiir-application-demo/home`
+
