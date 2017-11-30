@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://cdn.bootcss.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" data-for="rt-view" href="./common.css">
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/require.js/2.3.5/require.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+  <script src="./common.js"></script>
+</head>
+
+<body>
+  <div id="sfr-app">
+    <div class="rt-view">
+      <div class="rt-head">
+        <div class="rt-back"></div>
+        <div class="rt-center">
+          <span class="rt-title">Todo List</span>
+          <span class="rt-subtitle"></span>
+        </div>
+        <div class="rt-actions">
+          <i class="fa fa-twitter"></i>
+          <i class="fa fa-share"></i>
+        </div>
+        <link rel="stylesheet" href="https://unpkg.com/todomvc-app-css@2.0.6/index.css">
+        <link rel="stylesheet" href="./todolist.css">
+      </div>
+      <div class="rt-body">
+        <section class="todoapp">
+          <header class="header">
+            <h1>todos</h1>
+            <input class="new-todo"
+              autofocus autocomplete="off"
+              placeholder="What needs to be done?"
+              v-model="newTodo"
+              @keyup.enter="addTodo">
+          </header>
+          <section class="main" v-show="todos.length" v-cloak>
+            <input class="toggle-all" type="checkbox" v-model="allDone">
+            <ul class="todo-list">
+              <li v-for="todo in filteredTodos"
+                class="todo"
+                :key="todo.id"
+                :class="{ completed: todo.completed }">
+                <div class="view">
+                  <input class="toggle" type="checkbox" v-model="todo.completed">
+                  <label>{{ todo.title }}</label>
+                  <button class="destroy" @click="removeTodo(todo)"></button>
+                </div>
+            </ul>
+          </section>
+          <footer class="footer" v-show="todos.length" v-cloak>
+            <span class="todo-count">
+              <strong>{{ remaining }}</strong> {{ remaining | pluralize }} left
+            </span>
+            <ul class="filters">
+              <li><a href="#/all" :class="{ selected: visibility == 'all' }">All</a></li>
+              <li><a href="#/active" :class="{ selected: visibility == 'active' }">Active</a></li>
+              <li><a href="#/completed" :class="{ selected: visibility == 'completed' }">Completed</a></li>
+            </ul>
+            <button class="clear-completed" @click="removeCompleted" v-show="todos.length > remaining">
+              Clear completed
+            </button>
+          </footer>
+        </section>
+        <footer class="info">
+          <p>
+            Written by <a href="http://evanyou.me">Evan You</a>, modified by
+            <a href="http://harttle.land">Harttle</a>
+          </p>
+          <p>Editing is disabled since there's no double-click for mobile.</p>
+        </footer>
+
+        <script src="./todolist.js"> </script>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,5 +1,8 @@
 require.config({
-  baseUrl: localStorage.getItem('rt.debug') ? 'amd_modules' : '//unpkg.com'
+  baseUrl: localStorage.getItem('rt.debug') ? 'amd_modules' : '//unpkg.com',
+  paths: {
+    vue: 'https://cdn.bootcss.com/vue/2.5.9/vue.min'
+  }
 })
 
 // apmjs auto-creates these entries when installed locally
@@ -12,12 +15,10 @@ define('ralltiir-application', function (require) {
 
 require(['ralltiir', 'ralltiir-application', 'ralltiir-application/view/view'], function (rt, Service, View) {
   View.backHTML = '<i class="fa fa-arrow-left"></i>'
-  rt.services.register('/home', {title: 'Ralltiir Application'}, Service)
-  rt.services.register('/scroll-restore', {title: 'Scroll Restore'}, Service)
-  rt.services.register('/partial-update', {title: 'Partial Update'}, Service)
-  rt.services.register('/partial-update-advanced', {title: 'Partial Update'}, Service)
+  rt.services.register('/home', {title: 'Ralltiir for VUE'}, Service)
+  rt.services.register('/todolist', {title: 'Todo List'}, Service)
 
   rt.action.start({
-      root: '/ralltiir-application-demo'
+      root: '/ralltiir-application-demo-vue'
   })
 })
