@@ -39,9 +39,10 @@ h2, h3 {
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
 }
-.rt-view .rt-head .rt-actions .c-icon{
-    cursor: pointer;
-    font-size: 21px;
+
+.rt-head svg.icon {
+    height: 20px;
+    vertical-align: middle;
 }
 
 .rt-view .rt-head .rt-back {

@@ -1,0 +1,22 @@
+{
+  "name": "ralltiir-demo-vue",
+  "version": "1.0.0",
+  "dependencies": {
+    "ralltiir": {
+      "version": "2.9.3",
+      "integrity": "17719fa4d43e50a2dced72ba879e926dfe8b8e9e"
+    },
+    "@searchfe/assert": {
+      "version": "1.0.0",
+      "author": "harttle <yangjvn@126.com>"
+    },
+    "@searchfe/promise": {
+      "version": "1.0.3",
+      "author": "harttle <harttle@harttle.com>"
+    },
+    "ralltiir-application": {
+      "version": "4.1.11",
+      "integrity": "bb0f6323835825fabc2a0e9c6c2267b8451179be"
+    }
+  }
+}
