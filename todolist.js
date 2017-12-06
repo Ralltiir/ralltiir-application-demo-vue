@@ -1,3 +1,9 @@
+require.config({
+  paths: {
+    vue: 'https://cdn.bootcss.com/vue/2.5.9/vue.min'
+  }
+})
+
 require(['vue'], function (Vue) {
   // Full spec-compliant TodoMVC with localStorage persistence
   // and hash-based routing in ~120 effective lines of JavaScript.
